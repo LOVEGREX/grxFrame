@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "outDir": "./dist/grx-web/",
+    "rootDir": "./grx-web",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "include": ["grx-web/**/*"],
+  "exclude": ["node_modules"]
+}
