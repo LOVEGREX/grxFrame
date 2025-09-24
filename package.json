@@ -1,16 +1,24 @@
 {
-  "name": "web-demo",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "grx-web-demo",
+  "version": "1.1.6",
+  "description": "a really little demo",
+  "main": "dist/grx-web/index.js",
+  "types": "dist/grx-web/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [],
-  "author": "",
+  "author": "ggbond grx",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^24.5.2",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   },
   "dependencies": {
