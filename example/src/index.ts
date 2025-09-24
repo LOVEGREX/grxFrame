@@ -1,6 +1,6 @@
 // app.js
 //import { router, run, addMiddleware, addWrapMiddleware } from 'grx-web-demo';
-import { router, run, use} from 'grx-web-demo';
+import { router, run, use , usePipe } from 'grx-web-demo';
 // 注册一个GET路由
 router.get('/', (ctx) => {
     ctx.res.writeHead(200, { 'Content-Type': 'text/html' });
@@ -42,18 +42,16 @@ use(async (ctx, next) => {
     console.log('wrap2结束');
 });
 
-use(async (ctx, next) => {
+usePipe(async (ctx, next) => {
     ctx.setMiddlewareData('key1', 1);
     console.log('流水1开始');
     console.log('流水1结束');
-    await next();
 });
 
-use(async (ctx, next) => {
+usePipe(async (ctx, next) => {
     ctx.setMiddlewareData('key2', 2);
     console.log('流水2开始');
     console.log('流水2结束');
-    await next();
 });
 
 

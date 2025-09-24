@@ -1,7 +1,7 @@
 import {router,server} from "./export";
-import { use } from "./middleware/middleware-chain";
+import { use , usePipe } from "./middleware/middleware-chain";
 export {
-  router,use
+  router,use,usePipe
 }
 export function run(port: number = 3000) {
     server.listen(port, () => {
