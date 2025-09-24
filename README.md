@@ -92,6 +92,27 @@ router.post('/api/users', (ctx) => {
 // 启动服务器
 run(3000);
 
+4. 中间件支持
+参考example文件中src目录下index.ts文件运行
+//导入use
+import { use } from 'grx-web-demo';
+//注册一个wrap中间件
+use(async (ctx, next) => {
+    ctx.setMiddlewareData('key3', 3);
+    console.log('wrap1开始');
+    await next();
+    console.log('wrap1结束');
+    
+});
+
+//注册一个pipe中间件
+use(async (ctx, next) => {
+    ctx.setMiddlewareData('key1', 1);
+    console.log('流水1开始');
+    console.log('流水1结束');
+    await next();
+    
+});
 
 进阶功能
 
@@ -100,10 +121,6 @@ grx-web 还支持以下功能：
 • 路由参数解析
 
 • 中间件支持
-
-• 静态文件服务
-
-• 模板引擎集成
 
 请参考完整文档获取更多信息。
 

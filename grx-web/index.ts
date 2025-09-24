@@ -1,9 +1,8 @@
-import {router,server} from "./my";
-
+import {router,server} from "./export";
+import { use } from "./middleware/middleware-chain";
 export {
-  router,
+  router,use
 }
-
 export function run(port: number = 3000) {
     server.listen(port, () => {
         console.log(`Server running at http://localhost:${port}/`);
