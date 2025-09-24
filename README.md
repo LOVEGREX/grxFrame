@@ -93,8 +93,8 @@ router.post('/api/users', (ctx) => {
 run(3000);
 
 4. 中间件支持
-参考example文件中src目录下index.ts文件运行
-//导入use
+//参考example文件中src目录下index.ts文件运行;
+//导入use;
 import { use } from 'grx-web-demo';
 //注册一个wrap中间件
 use(async (ctx, next) => {
