@@ -16,18 +16,43 @@ export function usePipe(middleware: Middleware){
     middlewares.push(middleware);
     pipeMiddlewares.push(middleware);
     pipeMiddlewareSet.add(middleware); // 标记为pipe中间件
+    reorderMiddlewares();
 }
 
 // 用 WeakMap 来跟踪每个 ctx 对象是否已经调用过 next
 const nextCalledMap = new WeakMap<Ctx, boolean[]>();
 
+//排序
+// 添加一个重新排序的函数
+export function reorderMiddlewares() {
+    // 将普通中间件和pipe中间件分开
+    const normalMiddlewares = middlewares.filter(m => !pipeMiddlewareSet.has(m));
+    const pipeMiddlewaresOnly = middlewares.filter(m => pipeMiddlewareSet.has(m));
+    
+    // 清空原数组
+    middlewares.length = 0;
+    
+    // 先添加普通中间件
+    normalMiddlewares.forEach(m => middlewares.push(m));
+    
+    // 再添加pipe中间件
+    pipeMiddlewaresOnly.forEach(m => middlewares.push(m));
+}
+
 export async function next(ctx: Ctx, index: number = 0) { 
+
     // 初始化当前 ctx 的调用状态数组（如果尚未初始化）
     if (!nextCalledMap.has(ctx)) {
         nextCalledMap.set(ctx, new Array(middlewares.length).fill(false));
     }
     
     const calledFlags = nextCalledMap.get(ctx)!;
+
+        // 检查当前中间件的 next 是否已经被调用过
+    if (index != 0 && calledFlags[index - 1]) {
+        throw new Error(`next() has already been called for middleware at index ${index}`);
+    }
+    
     
     // 如果已经处理完所有中间件，执行最终处理
     if (index >= middlewares.length) { 
@@ -58,11 +83,6 @@ export async function next(ctx: Ctx, index: number = 0) {
     }
     
     // 普通wrap中间件处理逻辑
-    // 检查当前中间件的 next 是否已经被调用过
-    if (calledFlags[index]) {
-        throw new Error(`next() has already been called for middleware at index ${index}`);
-    }
-    
     // 标记当前中间件的 next 已被调用
     calledFlags[index] = true;
     

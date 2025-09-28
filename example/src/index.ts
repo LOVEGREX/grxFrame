@@ -1,6 +1,6 @@
 // app.js
 //import { router, run, addMiddleware, addWrapMiddleware } from 'grx-web-demo';
-import { router, run, use , usePipe } from 'grx-web-demo';
+import { router, run, use , usePipe } from 'C:/Users/v_gggoguo/Desktop/exe/grx-web-demo/grx-web';
 // 注册一个GET路由
 router.get('/', (ctx) => {
     ctx.res.writeHead(200, { 'Content-Type': 'text/html' });
@@ -31,28 +31,41 @@ use(async (ctx, next) => {
     ctx.setMiddlewareData('key3', 3);
     console.log('wrap1开始');
     await next();
+    await next();
     console.log('wrap1结束');
     
 });
 
-use(async (ctx, next) => {
-    ctx.setMiddlewareData('key4', 4);
-    console.log('wrap2开始');
-    await next();
-    console.log('wrap2结束');
-});
+// usePipe(async (ctx, next) => {
+//     ctx.setMiddlewareData('key1', 1);
+//     console.log('流水1开始');
+//     console.log('流水1结束');
+// });
+// usePipe(async (ctx, next) => {
+//     ctx.setMiddlewareData('key6', 1);
+//     console.log('流水5开始');
+//     console.log('流水5结束');
+// });
+// usePipe(async (ctx, next) => {
+//     ctx.setMiddlewareData('key8', 1);
+//     console.log('流水6开始');
+//     console.log('流水6结束');
+// });
 
-usePipe(async (ctx, next) => {
-    ctx.setMiddlewareData('key1', 1);
-    console.log('流水1开始');
-    console.log('流水1结束');
-});
+// use(async (ctx, next) => {
+//     ctx.setMiddlewareData('key4', 4);
+//     console.log('wrap2开始');
+//     await next();
+//     console.log('wrap2结束');
+// });
 
-usePipe(async (ctx, next) => {
-    ctx.setMiddlewareData('key2', 2);
-    console.log('流水2开始');
-    console.log('流水2结束');
-});
+
+
+// usePipe(async (ctx, next) => {
+//     ctx.setMiddlewareData('key2', 2);
+//     console.log('流水2开始');
+//     console.log('流水2结束');
+// });
 
 
 
