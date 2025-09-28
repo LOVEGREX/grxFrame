@@ -36,17 +36,17 @@ use(async (ctx, next) => {
     
 });
 
-// usePipe(async (ctx, next) => {
+// usePipe(async (ctx) => {
 //     ctx.setMiddlewareData('key1', 1);
 //     console.log('流水1开始');
 //     console.log('流水1结束');
 // });
-// usePipe(async (ctx, next) => {
+// usePipe(async (ctx) => {
 //     ctx.setMiddlewareData('key6', 1);
 //     console.log('流水5开始');
 //     console.log('流水5结束');
 // });
-// usePipe(async (ctx, next) => {
+// usePipe(async (ctx) => {
 //     ctx.setMiddlewareData('key8', 1);
 //     console.log('流水6开始');
 //     console.log('流水6结束');

@@ -6,25 +6,25 @@ import { getRouteHandler } from '../router/router-resgistry';
 
 //handle无法重复使用
 const requestHandledMap = new WeakMap<Ctx, boolean>();
-export async function handler(ctx: Ctx, req: IncomingMessage, res: ServerResponse, url: URL) {
+export async function handler(ctx: Ctx, url: URL) {
     if (requestHandledMap.get(ctx)) {
         return;
     }
 
     requestHandledMap.set(ctx, true);
     
-    if (req.method) {
-        const handler = getRouteHandler(req.method, url.pathname);
+    if (ctx.req.method) {
+        const handler = getRouteHandler(ctx.req.method, url.pathname);
         if (!handler) {
-            res.statusCode = 404;
-            res.end('Not Found');
+            ctx.res.statusCode = 404;
+            ctx.res.end('Not Found');
             return;
         }
         try {
             await handler(ctx);
         } catch (error) { 
-            res.statusCode = 500;
-            res.end('Internal Server Error');
+            ctx.res.statusCode = 500;
+            ctx.res.end('Internal Server Error');
             console.log(error);
         }
     }
