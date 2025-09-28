@@ -13,5 +13,5 @@ export function registerRoute(method: string, url: string, handler: (ctx: Ctx) =
 export function getRouteHandler(method: string, url: string) {
     const map = routers.get(method);
     if (!map) return null;
-    return map.get(url);
+    return map.get(url) || null;
 }

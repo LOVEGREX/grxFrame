@@ -8,7 +8,7 @@
     "dist"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --require ts-node/register test/**/*.test.ts",
     "build": "tsc",
     "prepublishOnly": "npm run build"
   },
@@ -17,7 +17,9 @@
   "repository": "https://github.com/LOVEGREX/grxFrame/tree/master",
   "license": "ISC",
   "devDependencies": {
+    "@types/mocha": "^10.0.10",
     "@types/node": "^24.5.2",
+    "mocha": "^11.7.2",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
