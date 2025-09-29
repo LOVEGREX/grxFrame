@@ -1,6 +1,5 @@
 // app.js
-// import { router, run, use , usePipe } from 'grx-web-demo';
-import { router, run, use , usePipe } from 'C:\\Users\\v_gggoguo\\Desktop\\exe\\grx-web-demo\\grx-web';
+import { router, run, use , usePipe } from 'grx-web-demo';
 // 注册一个GET路由
 router.get('/', (ctx) => {
     ctx.res.writeHead(200, { 'Content-Type': 'text/html' });
