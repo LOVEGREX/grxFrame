@@ -1,6 +1,6 @@
 // app.js
-//import { router, run, addMiddleware, addWrapMiddleware } from 'grx-web-demo';
-import { router, run, use , usePipe } from 'grx-web-demo';
+// import { router, run, use , usePipe } from 'grx-web-demo';
+import { router, run, use , usePipe } from 'C:\\Users\\v_gggoguo\\Desktop\\exe\\grx-web-demo\\grx-web';
 // 注册一个GET路由
 router.get('/', (ctx) => {
     ctx.res.writeHead(200, { 'Content-Type': 'text/html' });
@@ -25,15 +25,14 @@ router.post('/api/users', (ctx) => {
 
 // 中间件测试
 //流水中间件测试
-
+let requestCount = 0;
 //wrap中间件测试
 use(async (ctx, next) => {
+    const requestId = ++requestCount;
     ctx.setMiddlewareData('key3', 3);
-    console.log('wrap1开始');
+    console.log(`[Request ${requestId}] wrap1开始`);
     await next();
-    await next();
-    console.log('wrap1结束');
-    
+    console.log(`[Request ${requestId}] wrap1结束`);
 });
 
 usePipe(async (ctx) => {
@@ -53,28 +52,11 @@ usePipe(async (ctx) => {
 });
 
 use(async (ctx, next) => {
+    const requestId = ++requestCount;
     ctx.setMiddlewareData('key4', 4);
-    console.log('wrap2开始');
+    console.log(`[Request ${requestId}] wrap2开始`);
     await next();
-    console.log('wrap2结束');
+    console.log(`[Request ${requestId}] wrap2结束`);
 });
-
-
-
-
-
-// addMiddleware((ctx)=>{
-//     // ctx.getMiddlewareData;
-//     console.log();
-//     ctx.setMiddlewareData('key1', 1);
-// } );
-
-// // 
-// addWrapMiddleware(( next )=>{
-//     console.log('---->');
-//     await next();
-//     console.log('')
-// });
-
 // 启动服务器
 run(3000);

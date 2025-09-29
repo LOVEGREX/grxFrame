@@ -1,6 +1,6 @@
 {
   "name": "grx-web-demo",
-  "version": "2.0.7",
+  "version": "3.0.0",
   "description": "a really little demo",
   "main": "dist/grx-web/index.js",
   "types": "dist/grx-web/index.d.ts",

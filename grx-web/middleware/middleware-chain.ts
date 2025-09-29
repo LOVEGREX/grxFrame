@@ -1,48 +1,51 @@
 // middleware/middleware-chain.ts
 import { Ctx } from '../types';
-import { wrapMiddleware,pipeMiddleware} from './middleware';
+import { WrapMiddleware,PipeMiddleware} from './middleware';
 import { handler } from '../server/handle';
 import { normalized } from '../utils/url-normalizer';
 
-const wrapMiddlewares: wrapMiddleware[] = [];
-const pipeMiddlewares: pipeMiddleware[] = [];
-let nextIndex = 0;
+const wrapMiddlewares: WrapMiddleware[] = [];
+const pipeMiddlewares: PipeMiddleware[] = [];
 
-export function use(middleware: wrapMiddleware) {
+export function use(middleware: WrapMiddleware) {
     wrapMiddlewares.push(middleware);
-    nextIndex = 1;
 }
 
-export function usePipe(middleware: pipeMiddleware){
+export function usePipe(middleware: PipeMiddleware){
     pipeMiddlewares.push(middleware);
-    nextIndex = 1;
 }
 
-export async function next(ctx: Ctx, index: number = 0) {  
-    if(nextIndex == 0){
-        console.error('next() called multiple times');
-        return;
-    }
+export async function handleRequast(ctx: Ctx) { 
+    // 为每个请求创建独立的状态
+    await executeWrapMiddlewares(ctx, 0);
+}
+
+async function executeWrapMiddlewares(ctx: Ctx, index: number): Promise<void> {
     // 如果已经处理完所有中间件，执行最终处理
     if (index >= wrapMiddlewares.length) { 
         const url = new URL(ctx.req.url || '/', `http://${ctx.req.headers.host}`);
         url.pathname = normalized(url.pathname);
-        await next_pipe(ctx);
-        console.log("处理开始");
+        await executePipeMiddlewares(ctx);
         await handler(ctx, url);
-        console.log("处理结束");
-        nextIndex = 0;
         return;
     } 
     
     const currentMiddleware = wrapMiddlewares[index];
     
     // 调用wrap中间件
-    await currentMiddleware(ctx, async () => { 
-        await next(ctx, index + 1);
-    }, ctx.middlewaredData);
+    //只能使用一次
+    let nextCalled = false;
+    const next = async () => {
+        if (nextCalled) {
+            throw new Error('next() called multiple times');
+        }
+        nextCalled = true;
+        await executeWrapMiddlewares(ctx, index + 1);
+    };
+    await currentMiddleware(ctx, next);
 }
-export async function next_pipe(ctx: Ctx) { 
+
+async function executePipeMiddlewares(ctx: Ctx) { 
     if(pipeMiddlewares.length == 0){
         return;
     }

@@ -1,5 +1,5 @@
 // middleware/middleware.ts
 import { Ctx } from '../types';
 
-export type wrapMiddleware = (ctx: Ctx, next: () => Promise<void>, pre: Map<string,any>) => Promise<void>;
-export type pipeMiddleware = (ctx: Ctx) => Promise<void>;
+export type WrapMiddleware = (ctx: Ctx, next: () => Promise<void>) => Promise<void>;
+export type PipeMiddleware = (ctx: Ctx) => Promise<void>;
