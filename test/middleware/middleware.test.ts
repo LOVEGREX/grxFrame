@@ -1,11 +1,20 @@
+// test/middleware/middleware.test.ts
 import { strict as assert } from 'assert';
 import { Ctx } from '../../dist/grx-web/types';
+import { WrapMiddleware, PipeMiddleware } from '../../dist/grx-web/middleware/middleware';
 
-describe('Middleware', () => {
-  it('should define Middleware type correctly', () => {
-    // 这里主要是类型检查测试
-    // 实际的 Middleware 类型在 middleware.d.ts 中定义
-    assert.ok(true);
+describe('Middleware Types', () => {
+  it('should define Middleware types correctly', () => {
+    // 测试 WrapMiddleware 类型
+    const wrapMiddleware: WrapMiddleware = async (ctx, next) => {
+      await next();
+    };
+    
+    // 测试 PipeMiddleware 类型
+    const pipeMiddleware: PipeMiddleware = async (ctx) => {};
+    
+    assert.ok(wrapMiddleware);
+    assert.ok(pipeMiddleware);
   });
 
   it('should create context object with required properties', () => {
@@ -22,7 +31,7 @@ describe('Middleware', () => {
     assert.ok(ctx.res);
     assert.ok(ctx.json);
     assert.ok(ctx.middlewaredData);
-    assert.ok(ctx.getMiddlewareData);
-    assert.ok(ctx.setMiddlewareData);
+    assert.ok(typeof ctx.getMiddlewareData === 'function');
+    assert.ok(typeof ctx.setMiddlewareData === 'function');
   });
 });

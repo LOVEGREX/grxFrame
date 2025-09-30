@@ -5,39 +5,21 @@ import { Ctx } from '../types';
 
 export const server = createServer(async (req, res) => {
     const originEnd = res.end.bind(res);
-    // 缓存写入的数据，直到统一 flush
-    let bufferedChunks: Buffer[] = [];
-    // 是否已经结束
-    let isEnded = false;
-    // 重写 end 方法
-    res.end = function (this: ServerResponse, chunk?: any, encoding?: any, cb?: (() => void)) { 
-        // 如果已经结束，则直接返回
-        if (isEnded) {
-            return this as any;
-        }
-        // 如果 chunk 不为 null，则将 chunk 转换为 Buffer
-        if (chunk != null) {
-            const buffer = Buffer.isBuffer(chunk)
-                ? chunk
-                : Buffer.from(String(chunk), (typeof encoding === 'string' ? encoding : undefined) as BufferEncoding | undefined);
-            bufferedChunks.push(buffer);
-        }
-        //判断是否最后一步
-        (res as any).flushEnd();
-        // 执行回调函数
-        if (typeof cb === 'function') cb();
-        // 返回 this
-        return this as any;
+    const originWrite = res.write.bind(res);
+    // 防重复 end 调用
+    let endCalled = false;
+
+    // 重写 write：直接透传
+    res.write = function (this: ServerResponse, chunk: any, encoding?: any, cb?: (() => void)) {
+        return originWrite(chunk, encoding as any, cb as any) as any;
     } as any;
 
-    (res as any).flushEnd = function() {
-        if (isEnded) {
-            return;
-        }
-        isEnded = true;
-        const finalBuffer = bufferedChunks.length > 0 ? Buffer.concat(bufferedChunks) : undefined;
-        return originEnd(finalBuffer);
-    };
+    // 重写 end 方法
+    res.end = function (this: ServerResponse, chunk?: any, encoding?: any, cb?: (() => void)) { 
+        if (endCalled) return this as any;
+        endCalled = true;
+        return originEnd(chunk as any, encoding as any, cb as any) as any;
+    } as any;
 
 
     const ctx: Ctx = { 
@@ -60,9 +42,12 @@ export const server = createServer(async (req, res) => {
     
     try { 
         await handleRequast(ctx);
+        // if (!endCalled) {
+        //     res.end();
+        // }
     } catch (error) { 
         res.statusCode = 500;
-        res.end('Internal Server Error');
+        originEnd('Internal Server Error');
         console.log(error);
     }
 });

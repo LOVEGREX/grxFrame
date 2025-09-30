@@ -31,6 +31,7 @@ use(async (ctx, next) => {
     ctx.setMiddlewareData('key3', 3);
     console.log(`[Request ${requestId}] wrap1开始`);
     await next();
+    await next();
     console.log(`[Request ${requestId}] wrap1结束`);
 });
 

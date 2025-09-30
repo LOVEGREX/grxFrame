@@ -1,7 +1,7 @@
 import { strict as assert } from 'assert';
-import { handler } from '../../dist/grx-web/server/handle';
-import { registerRoute } from '../../dist/grx-web/router/router-resgistry';
-import { Ctx } from '../../dist/grx-web/types';
+import { handler } from '../../grx-web/server/handle';
+import { registerRoute } from '../../grx-web/router/router-resgistry';
+import { Ctx } from '../../grx-web/types';
 import { IncomingMessage, ServerResponse } from 'http';
 import { URL } from 'url';
 
@@ -27,8 +27,8 @@ describe('Server Handler', () => {
       setMiddlewareData: (key: string, value: any) => {}
     };
     
-    // 重置路由器注册表
-    delete require.cache[require.resolve('../../dist/grx-web/router/router-resgistry')];
+    // 重置路由器注册表（重新加载源码模块）
+    delete require.cache[require.resolve('../../grx-web/router/router-resgistry')];
   });
 
   it('should call registered route handler', async () => {
@@ -40,7 +40,7 @@ describe('Server Handler', () => {
     registerRoute('GET', '/test/', testHandler);
     
     const url = new URL('http://localhost/test/');
-    await handler(mockCtx, mockReq, mockRes, url);
+    await handler(mockCtx, url);
     
     assert.ok(handlerCalled);
   });
@@ -48,7 +48,7 @@ describe('Server Handler', () => {
   it('should return 404 for unregistered route', async () => {
     const url = new URL('http://localhost/non-existent/');
     
-    await handler(mockCtx, mockReq, mockRes, url);
+    await handler(mockCtx, url);
     
     assert.equal(mockRes.statusCode, 404);
   });
@@ -71,7 +71,7 @@ describe('Server Handler', () => {
     // 测试 GET 请求
     mockReq.method = 'GET';
     const getUrl = new URL('http://localhost/api/resource/');
-    await handler(mockCtx, mockReq, mockRes, getUrl);
+    await handler(mockCtx, getUrl);
     
     assert.ok(getHandlerCalled);
     assert.ok(!postHandlerCalled);
