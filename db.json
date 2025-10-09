@@ -1,5 +1,12 @@
 {
-    "posts": [],
-    "comments": [],
-    "profile": []
+  "posts": [],
+  "comments": [],
+  "users": [
+    {
+      "id": "86e0",
+      "email": "alice+new@example.com",
+      "name": "Alice"
+    }
+  ],
+  "profile": []
 }
