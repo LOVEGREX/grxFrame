@@ -1,6 +1,6 @@
 // app.js
 import { router, run, use , usePipe } from 'C:\\Users\\v_gggoguo\\Desktop\\exe\\grx-web-demo\\grx-web';
-
+// import { router, run, use , usePipe } from 'grx-web-demo';
 // 中间件测试
 //流水中间件测试
 let requestCount = 0;
