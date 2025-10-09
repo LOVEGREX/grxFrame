@@ -5,7 +5,7 @@ import { Ctx } from '../../grx-web/types';
 import { IncomingMessage, ServerResponse } from 'http';
 import { URL } from 'url';
 
-describe('Server Handler', () => {
+describe('服务器处理器', () => {
   let mockReq: IncomingMessage;
   let mockRes: ServerResponse;
   let mockCtx: Ctx;
@@ -31,7 +31,7 @@ describe('Server Handler', () => {
     delete require.cache[require.resolve('../../grx-web/router/router-resgistry')];
   });
 
-  it('should call registered route handler', async () => {
+  it('应该调用已注册的路由处理器', async () => {
     let handlerCalled = false;
     const testHandler = (ctx: Ctx) => {
       handlerCalled = true;
@@ -45,7 +45,7 @@ describe('Server Handler', () => {
     assert.ok(handlerCalled);
   });
 
-  it('should return 404 for unregistered route', async () => {
+  it('应该为未注册的路由返回 404', async () => {
     const url = new URL('http://localhost/non-existent/');
     
     await handler(mockCtx, url);
@@ -53,7 +53,7 @@ describe('Server Handler', () => {
     assert.equal(mockRes.statusCode, 404);
   });
 
-  it('should handle routes with different HTTP methods', async () => {
+  it('应该处理不同 HTTP 方法的路由', async () => {
     let getHandlerCalled = false;
     let postHandlerCalled = false;
     

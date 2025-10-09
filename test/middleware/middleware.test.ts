@@ -3,8 +3,8 @@ import { strict as assert } from 'assert';
 import { Ctx } from '../../dist/grx-web/types';
 import { WrapMiddleware, PipeMiddleware } from '../../dist/grx-web/middleware/middleware';
 
-describe('Middleware Types', () => {
-  it('should define Middleware types correctly', () => {
+describe('中间件类型', () => {
+  it('应该正确定义中间件类型', () => {
     // 测试 WrapMiddleware 类型
     const wrapMiddleware: WrapMiddleware = async (ctx, next) => {
       await next();
@@ -17,7 +17,7 @@ describe('Middleware Types', () => {
     assert.ok(pipeMiddleware);
   });
 
-  it('should create context object with required properties', () => {
+  it('应该创建具有必需属性的上下文对象', () => {
     const ctx: Ctx = {
       req: {} as any,
       res: {} as any,

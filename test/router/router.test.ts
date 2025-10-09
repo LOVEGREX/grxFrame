@@ -3,13 +3,13 @@ import { router } from '../../dist/grx-web/router/router';
 import { getRouteHandler } from '../../dist/grx-web/router/router-resgistry';
 import { Ctx } from '../../dist/grx-web/types';
 
-describe('Router', () => {
+describe('路由器', () => {
   beforeEach(() => {
     // 重置路由器注册表
     delete require.cache[require.resolve('../../dist/grx-web/router/router-resgistry')];
   });
 
-  it('should register GET route', () => {
+  it('应该能够注册 GET 路由', () => {
     let handlerCalled = false;
     const testHandler = (ctx: Ctx) => {
       handlerCalled = true;
@@ -21,7 +21,7 @@ describe('Router', () => {
     assert.ok(registeredHandler);
   });
 
-  it('should register POST route', () => {
+  it('应该能够注册 POST 路由', () => {
     let handlerCalled = false;
     const testHandler = (ctx: Ctx) => {
       handlerCalled = true;
@@ -33,7 +33,7 @@ describe('Router', () => {
     assert.ok(registeredHandler);
   });
 
-  it('should normalize route URLs', () => {
+  it('应该能够标准化路由 URL', () => {
     const testHandler = (ctx: Ctx) => {};
 
     router.get('api/users', testHandler);

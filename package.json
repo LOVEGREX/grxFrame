@@ -17,10 +17,14 @@
   "repository": "https://github.com/LOVEGREX/grxFrame/tree/master",
   "license": "ISC",
   "devDependencies": {
+    "@types/chai": "^5.2.2",
     "@types/mocha": "^10.0.10",
     "@types/node": "^24.5.2",
+    "@types/sinon": "^17.0.4",
+    "chai": "^6.2.0",
     "mocha": "^11.7.2",
     "nodemon": "^3.1.10",
+    "sinon": "^21.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   },

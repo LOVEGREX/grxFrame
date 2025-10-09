@@ -2,13 +2,13 @@ import { strict as assert } from 'assert';
 import { registerRoute, getRouteHandler } from '../../dist/grx-web/router/router-resgistry';
 import { Ctx } from '../../dist/grx-web/types';
 
-describe('Router Registry', () => {
+describe('路由器注册表', () => {
   beforeEach(() => {
     // 清理模块缓存以重置路由器映射
     delete require.cache[require.resolve('../../dist/grx-web/router/router-resgistry')];
   });
 
-  it('should register and retrieve route handler', () => {
+  it('应该能够注册和检索路由处理器', () => {
     let handlerCalled = false;
     const testHandler = (ctx: Ctx) => {
       handlerCalled = true;
@@ -20,13 +20,13 @@ describe('Router Registry', () => {
     assert.equal(retrievedHandler, testHandler);
   });
 
-  it('should return null for non-existent route', () => {
+  it('应该为不存在的路由返回 null', () => {
     const handler = getRouteHandler('GET', '/non-existent/');
     console.log(handler);
     assert.equal(handler, null);
   });
 
-  it('should register multiple routes for same method', () => {
+  it('应该能够为同一方法注册多个路由', () => {
     const handler1 = (ctx: Ctx) => {};
     const handler2 = (ctx: Ctx) => {};
 
@@ -40,7 +40,7 @@ describe('Router Registry', () => {
     assert.equal(retrievedHandler2, handler2);
   });
 
-  it('should register routes for different methods', () => {
+  it('应该能够为不同方法注册路由', () => {
     const getHandler = (ctx: Ctx) => {};
     const postHandler = (ctx: Ctx) => {};
 

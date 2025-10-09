@@ -28,7 +28,7 @@ export const server = createServer(async (req, res) => {
         // 返回json数据
         json: (input: object) => { 
             res.writeHead(200, { "Content-Type": "application/json" });
-            res.end(JSON.stringify(input));
+            res.write(JSON.stringify(input));
         },
         // 中间件数据
         middlewaredData: new Map<string, any>(),
@@ -47,6 +47,7 @@ export const server = createServer(async (req, res) => {
         // }
     } catch (error) { 
         res.statusCode = 500;
+        ctx.res.end('<h1>Helsdasdsadslo World!</h1>');
         originEnd('Internal Server Error');
         console.log(error);
     }

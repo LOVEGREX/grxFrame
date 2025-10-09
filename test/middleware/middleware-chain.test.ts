@@ -4,7 +4,7 @@ import { use, usePipe, middlewares, pipeMiddlewares, handleRequast } from '../..
 import { WrapMiddleware, PipeMiddleware } from '../../grx-web/middleware/middleware';
 import { Ctx } from '../../grx-web/types';
 
-describe('Middleware Chain', () => {
+describe('中间件链', () => {
   beforeEach(() => {
     // 清理中间件数组
     while (middlewares.length > 0) {
@@ -15,7 +15,7 @@ describe('Middleware Chain', () => {
     }
   });
 
-  it('should add wrap middleware to middlewares array', () => {
+  it('应该将包裹型中间件添加到 middlewares 数组', () => {
     const middleware: WrapMiddleware = async (ctx, next) => {};
     
     use(middleware);
@@ -24,7 +24,7 @@ describe('Middleware Chain', () => {
     assert.equal(middlewares[0], middleware);
   });
 
-  it('should add pipe middleware to pipeMiddlewares array', () => {
+  it('应该将管道型中间件添加到 pipeMiddlewares 数组', () => {
     const middleware: PipeMiddleware = async (ctx) => {};
     
     usePipe(middleware);
@@ -33,7 +33,7 @@ describe('Middleware Chain', () => {
     assert.equal(pipeMiddlewares[0], middleware);
   });
 
-  it('should execute middleware in order', async () => {
+  it('应该按顺序执行中间件', async () => {
     const executionOrder: number[] = [];
 
     const m1: WrapMiddleware = async (ctx, next) => {
@@ -71,7 +71,7 @@ describe('Middleware Chain', () => {
     assert.deepEqual(executionOrder, [1,2,3,4,5,6]);
   });
 
-  it('should throw if next() is called multiple times', async () => {
+  it('当 next() 被多次调用时应抛出错误', async () => {
     const bad: WrapMiddleware = async (ctx, next) => {
       await next();
       await next();
@@ -90,7 +90,7 @@ describe('Middleware Chain', () => {
     await assert.rejects(() => handleRequast(ctx), /next\(\) called multiple times/);
   });
 
-  it('should execute pipe middlewares in order after wraps', async () => {
+  it('在包裹型中间件之后应按顺序执行管道型中间件', async () => {
     const pipeOrder: number[] = [];
     const w: WrapMiddleware = async (ctx, next) => { await next(); };
     use(w);
